@@ -187,6 +187,13 @@
             <version>${jackson-2-version}</version>
         </dependency>
 
+        <!-- JETTY -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-runner</artifactId>
+            <version>9.4.0.v20161208</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -208,6 +215,30 @@
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>copy-dependencies</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <artifactItems>
+                                    <artifactItem>
+                                        <groupId>org.eclipse.jetty</groupId>
+                                        <artifactId>jetty-runner</artifactId>
+                                        <version>9.4.0.v20161208</version>
+                                        <destFileName>jetty-runner.jar</destFileName>
+                                    </artifactItem>
+                                </artifactItems>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

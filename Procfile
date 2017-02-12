@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -jar target/dependency/jetty-runner-9.4.0.v20161208.jar --port $PORT target/*.war
