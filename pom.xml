@@ -46,7 +46,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
         <!-- JAVAEE capacity stop -->
@@ -192,12 +192,12 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-runner</artifactId>
             <version>9.4.0.v20161208</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
 
     <build>
-        <pluginManagement>
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -222,26 +222,22 @@
                     <version>3.0.0</version>
                     <executions>
                         <execution>
-                            <id>copy-dependencies</id>
                             <phase>package</phase>
-                            <goals>
-                                <goal>copy-dependencies</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <groupId>org.eclipse.jetty</groupId>
-                                        <artifactId>jetty-runner</artifactId>
-                                        <version>9.4.0.v20161208</version>
-                                        <destFileName>jetty-runner.jar</destFileName>
-                                    </artifactItem>
-                                </artifactItems>
-                            </configuration>
+                            <goals><goal>copy</goal></goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <artifactItems>
+                            <artifactItem>
+                                <groupId>org.eclipse.jetty</groupId>
+                                <artifactId>jetty-runner</artifactId>
+                                <version>9.4.0.v20161208</version>
+                                <destFileName>jetty-runner.jar</destFileName>
+                            </artifactItem>
+                        </artifactItems>
+                    </configuration>
                 </plugin>
             </plugins>
-        </pluginManagement>
     </build>
 
 </project>
