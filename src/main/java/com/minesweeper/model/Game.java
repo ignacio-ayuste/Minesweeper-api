@@ -1,6 +1,5 @@
 package com.minesweeper.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
@@ -9,34 +8,39 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 
 @Document(collection = "Game")
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Game implements Serializable {
 
     public static final Logger LOG = LoggerFactory.getLogger(Game.class);
 
     @Id
     private String id;
-    private String status;
+    private Status status;
     private Board board;
 
-
     public Game() {
-        status = "Start";
-        board = new Board();
+    }
+
+    public Game(int rows, int cols, int minesLimit) {
+        status = Status.NEW;
+        board = new Board(rows,cols,minesLimit);
     }
 
     public boolean select(int row, int column) {
-        LOG.debug("select ");
+        LOG.debug("Select Square row: {}, col: {}", row, column);
+        Status.SELECT.setValue(String.format(Status.SELECT.getValue(), row, column));
+        status = Status.SELECT;
 
         boolean finish = board.setPosition(row, column);
-        System.out.println("finish: " + finish);
+        LOG.debug("finish: {}", finish);
         if(!finish){
             board.openAdjacentSquares(row,column);
-            boolean win = board.win();
-            System.out.println("Win: " + win);
+            if(board.win()){
+                status = Status.WIN;
+                LOG.info("Finish - You Win!!!!!!");
+            }
         }else{
             LOG.info("Finish - Show Mines");
-            board.showMines();
+            status = Status.LOOSE;
             return true;
         }
 
@@ -44,6 +48,8 @@ public class Game implements Serializable {
     }
 
     public void flag(int row, int col) {
+        board.getSquares().get(row)[col].setValue('F');
+
     }
 
     public String getId() {
@@ -54,11 +60,11 @@ public class Game implements Serializable {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

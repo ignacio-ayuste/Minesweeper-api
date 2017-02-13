@@ -14,7 +14,7 @@ public class TestGame {
 
     @Before
     public void setup() {
-        game = new Game();
+        game = new Game(3,3,1);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class TestGame {
         boolean invalidSquareValue = true;
         for (int i = -1; i < 2; i++){
             for (int j = -1; j < 2; j++){
-                if (board.inNotMine(row+i, column+j) && board.isExceededLimitBoard(row, column, i, j)){
+                if (board.isNotMine(row+i, column+j) && board.isExceededLimitBoard(row, column, i, j)){
                     System.out.println(board.getSquares().get(row + i)[column + j].getValue());
                     invalidSquareValue = board.getSquares().get(row + i)[column + j].isInitialValue();
                     if(invalidSquareValue){
